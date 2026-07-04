@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Speeds - Tribal Wars</title>
     <style>
-        /* --- RESET Y FUENTE --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Georgia', 'Times New Roman', serif;
@@ -34,26 +33,100 @@
         .scroll-container::before { top: -8px; left: 20px; }
         .scroll-container::after { bottom: -8px; right: 20px; }
 
-        /* RELOJ */
-        .time-display {
-            display: flex; justify-content: center; align-items: center; gap: 35px; flex-wrap: wrap;
-            padding: 12px 20px; margin-bottom: 20px;
+        /* RELOJ Y CALCULADORA */
+        .top-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 20px;
             background: rgba(235, 215, 185, 0.3);
-            border: 1px solid #dac29c; border-radius: 8px;
+            border: 1px solid #dac29c;
+            border-radius: 8px;
+            padding: 15px 20px;
             box-shadow: inset 0 1px 4px rgba(255, 245, 230, 0.8);
         }
-        .time-item { display: flex; align-items: baseline; gap: 14px; }
-        .time-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: #5c3f28; font-weight: 700; }
+        .time-item {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+        }
+        .time-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #5c3f28;
+            font-weight: 700;
+        }
         .time-label span { font-weight: 400; opacity: 0.6; }
-        .time-value { font-size: 2rem; font-weight: 700; font-family: 'Courier New', monospace; color: #2a1a10; min-width: 100px; text-align: center; }
+        .time-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            color: #2a1a10;
+            min-width: 90px;
+            text-align: center;
+        }
         .time-divider { color: #b48b5a; font-size: 1.6rem; opacity: 0.4; }
 
+        /* CALCULADORA */
+        .converter-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            background: rgba(235, 215, 185, 0.2);
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px solid #b48b5a;
+        }
+        .converter-box input {
+            background: transparent;
+            border: 1px solid #b48b5a;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            width: 100px;
+            color: #2a1a10;
+            text-align: center;
+        }
+        .converter-box input:focus { outline: none; border-color: #7a5230; }
+        .converter-box .arrow { font-size: 1.2rem; color: #7a5230; }
+        .converter-box .result {
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #1f4a1f;
+            min-width: 70px;
+            text-align: center;
+        }
+        .converter-box .hint {
+            font-size: 0.7rem;
+            color: #5c3f28;
+            opacity: 0.7;
+            cursor: help;
+        }
+
         /* TABS */
-        .tabs { display: flex; gap: 4px; margin-bottom: 25px; border-bottom: 2px solid #b48b5a; }
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #b48b5a;
+        }
         .tab-btn {
-            background: rgba(235, 215, 185, 0.2); border: 1px solid #dac29c; border-bottom: none;
-            padding: 12px 28px; font-family: 'Georgia', serif; font-size: 1rem; font-weight: 700;
-            color: #5c3f28; cursor: pointer; border-radius: 8px 8px 0 0; transition: all 0.2s;
+            background: rgba(235, 215, 185, 0.2);
+            border: 1px solid #dac29c;
+            border-bottom: none;
+            padding: 12px 28px;
+            font-family: 'Georgia', serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #5c3f28;
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.2s;
         }
         .tab-btn:hover { background: #dac29c; }
         .tab-btn.active { background: #7a5230; color: #f6edd9; border-color: #7a5230; }
@@ -61,14 +134,45 @@
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* GUÍA */
-        .title-section { text-align: center; border-bottom: 3px double #8b5e34; padding-bottom: 15px; margin-bottom: 25px; }
-        .title-section h1 { font-size: 2.2rem; color: #3b2313; letter-spacing: 4px; text-shadow: 2px 2px 0 #d4b48c; }
+        /* GUÍA - TABLAS */
+        .title-section {
+            text-align: center;
+            border-bottom: 3px double #8b5e34;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        .title-section h1 {
+            font-size: 2.2rem;
+            color: #3b2313;
+            letter-spacing: 4px;
+            text-shadow: 2px 2px 0 #d4b48c;
+        }
         .title-section h1 span { color: #a8662b; }
         .title-section p { font-style: italic; color: #5c3f28; }
-        .sub-info { background: #dac29c; padding: 6px 18px; border-radius: 30px; display: inline-block; margin-top: 10px; border: 1px solid #b48b5a; }
-        .tribal-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; background: rgba(255, 248, 235, 0.5); border: 2px solid #7a5a3a; box-shadow: 0 8px 16px rgba(0,0,0,0.2); margin-bottom: 30px; }
-        .tribal-table thead tr { background: linear-gradient(180deg, #5c3d26, #3d2617); color: #f6edd9; text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.8rem; }
+        .sub-info {
+            background: #dac29c;
+            padding: 6px 18px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-top: 10px;
+            border: 1px solid #b48b5a;
+        }
+        .tribal-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            background: rgba(255, 248, 235, 0.5);
+            border: 2px solid #7a5a3a;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        .tribal-table thead tr {
+            background: linear-gradient(180deg, #5c3d26, #3d2617);
+            color: #f6edd9;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 0.8rem;
+        }
         .tribal-table thead th { padding: 12px; text-align: left; border-right: 1px solid #6f4f32; }
         .tribal-table thead th:last-child { border-right: none; }
         .tribal-table tbody tr { border-bottom: 1px solid #cbb290; transition: background 0.2s; }
@@ -78,39 +182,102 @@
         .tribal-table tbody td:first-child { font-weight: 700; color: #4a2c18; }
         .tribal-table.tipo tbody td:nth-child(2) { font-style: italic; background: rgba(235, 215, 185, 0.2); }
         .tribal-table.consejos tbody td:nth-child(2) { font-weight: 600; }
-        .section-divider { text-align: center; margin: 20px 0 25px; font-size: 1.3rem; color: #7a5230; letter-spacing: 6px; border-top: 2px dashed #b48b5a; padding-top: 15px; }
+        .section-divider {
+            text-align: center;
+            margin: 20px 0 25px;
+            font-size: 1.3rem;
+            color: #7a5230;
+            letter-spacing: 6px;
+            border-top: 2px dashed #b48b5a;
+            padding-top: 15px;
+        }
 
-        /* SPEEDS FUTUROS */
-        .table-wrapper { overflow-x: auto; margin-bottom: 20px; border-radius: 6px; border: 2px solid #7a5a3a; box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
-        .speed-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; background: rgba(255, 248, 235, 0.5); min-width: 700px; }
-        .speed-table thead tr { background: linear-gradient(180deg, #5c3d26, #3d2617); color: #f6edd9; text-transform: uppercase; font-size: 0.7rem; }
+        /* TABLA DE SPEEDS FUTUROS */
+        .table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border: 2px solid #7a5a3a;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        .speed-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            background: rgba(255, 248, 235, 0.5);
+            min-width: 700px;
+        }
+        .speed-table thead tr {
+            background: linear-gradient(180deg, #5c3d26, #3d2617);
+            color: #f6edd9;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+        }
         .speed-table thead th { padding: 10px 12px; text-align: left; border-right: 1px solid #6f4f32; }
         .speed-table thead th:last-child { border-right: none; }
         .speed-table tbody tr { border-bottom: 1px solid #cbb290; }
         .speed-table tbody tr:hover { background: #e6d3b9; }
         .speed-table tbody td { padding: 10px 12px; vertical-align: middle; color: #2f1f13; border-right: 1px solid #dac29c; }
         .speed-table tbody td:last-child { border-right: none; }
-        .type-badge { display: inline-block; background: #dac29c; padding: 2px 12px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; border: 1px solid #b48b5a; }
+        .type-badge {
+            display: inline-block;
+            background: #dac29c;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: 1px solid #b48b5a;
+        }
         .time-col { font-family: 'Courier New', monospace; font-size: 0.8rem; white-space: nowrap; }
         .col-local { font-weight: 600; color: #1f4a1f; }
         .col-server { color: #5a3d2a; }
 
-        /* ESTADO */
-        .status-badge { font-size: 0.75rem; text-transform: uppercase; padding: 4px 14px; border-radius: 20px; border: 1px solid #b48b5a; background: rgba(200,175,140,0.3); color: #5c3f28; }
+        /* ESTADO Y FOOTER */
+        .status-badge {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            padding: 4px 14px;
+            border-radius: 20px;
+            border: 1px solid #b48b5a;
+            background: rgba(200,175,140,0.3);
+            color: #5c3f28;
+        }
         .status-badge.loading { color: #7a6a3a; border-color: #b8a060; }
         .status-badge.success { color: #2d6a2d; border-color: #4a8a4a; }
         .status-badge.error { color: #8a2a2a; border-color: #b84a4a; }
 
-        .footer-note { margin-top: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; border-top: 2px solid #b48b5a; padding-top: 16px; font-size: 0.8rem; color: #4a3422; }
-        .btn-refresh { background: transparent; border: 1px solid #b48b5a; border-radius: 30px; padding: 4px 16px; font-family: 'Georgia', serif; font-size: 0.75rem; color: #5c3f28; cursor: pointer; transition: all 0.2s; background: rgba(235,215,185,0.3); }
+        .footer-note {
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            border-top: 2px solid #b48b5a;
+            padding-top: 16px;
+            font-size: 0.8rem;
+            color: #4a3422;
+        }
+        .btn-refresh {
+            background: transparent;
+            border: 1px solid #b48b5a;
+            border-radius: 30px;
+            padding: 4px 16px;
+            font-family: 'Georgia', serif;
+            font-size: 0.75rem;
+            color: #5c3f28;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(235,215,185,0.3);
+        }
         .btn-refresh:hover { background: #dac29c; border-color: #7a5230; }
 
         @media (max-width: 700px) {
             .scroll-container { padding: 15px; border-width: 10px; }
-            .time-value { font-size: 1.3rem; min-width: 80px; }
-            .time-display { flex-direction: column; align-items: stretch; gap: 8px; }
+            .top-bar { flex-direction: column; align-items: stretch; gap: 10px; }
             .time-item { justify-content: space-between; }
             .time-divider { display: none; }
+            .converter-box { justify-content: center; }
             .tabs { flex-direction: column; border-bottom: none; gap: 6px; }
             .tab-btn { border-radius: 6px; border-bottom: 1px solid #dac29c; text-align: center; }
             .speed-table { font-size: 0.7rem; min-width: 550px; }
@@ -121,16 +288,25 @@
 <body>
     <div class="scroll-container">
 
-        <!-- RELOJ -->
-        <div class="time-display">
+        <!-- BARRA SUPERIOR: RELOJ + CALCULADORA -->
+        <div class="top-bar">
             <div class="time-item">
-                <span class="time-label">🕒 Hora del servidor <span>(UTC)</span></span>
+                <span class="time-label">🕒 Hora servidor <span>(UTC)</span></span>
                 <span class="time-value" id="utc-time">--:--:--</span>
             </div>
             <span class="time-divider">|</span>
             <div class="time-item">
                 <span class="time-label">📍 Hora local <span>(Colombia)</span></span>
                 <span class="time-value" id="col-time">--:--:--</span>
+            </div>
+            <span class="time-divider">|</span>
+            <!-- CALCULADORA DE CONVERSIÓN -->
+            <div class="converter-box">
+                <span style="font-size:0.75rem; font-weight:700; color:#5c3f28;">UTC → COL</span>
+                <input type="time" id="inputUTC" value="15:54" step="60">
+                <span class="arrow">➜</span>
+                <span class="result" id="resultCol">--:--</span>
+                <span class="hint" title="Ingresa hora en formato HH:MM (servidor) y verás su equivalente en Colombia">ⓘ</span>
             </div>
         </div>
 
@@ -165,7 +341,7 @@
             <div class="section-divider">✦ ✦ ✦</div>
             <div style="margin-top: 10px;">
                 <div class="title-section" style="border-bottom: 3px double #8b5e34; padding-bottom: 15px; margin-bottom: 20px;">
-                    <h2 style="font-size: 1.8rem; color: #3b2313; text-align: center; letter-spacing: 4px; text-transform: uppercase; font-family: 'Times New Roman', serif;">
+                    <h2 style="font-size: 1.8rem; color: #3b2313; text-align: center; letter-spacing: 4px; text-transform: uppercase;">
                         <span style="color: #a8662b;">⚔</span> Consejos por tipo <span style="color: #a8662b;">⚔</span>
                     </h2>
                     <p style="font-style: italic; color: #5c3f28; font-size: 1rem; text-align: center; margin-top: 4px;">— Enfoque, recursos y estrategia clave —</p>
@@ -221,21 +397,52 @@
 
     <script>
         // ============================================================
-        // 1. RELOJ
+        // 1. RELOJ EN VIVO
         // ============================================================
         function updateClocks() {
             const now = new Date();
-            document.getElementById('utc-time').textContent = now.toLocaleTimeString('es-ES', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            document.getElementById('col-time').textContent = now.toLocaleTimeString('es-ES', { timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('utc-time').textContent = now.toLocaleTimeString('es-ES', {
+                timeZone: 'UTC', hour: '2-digit', minute: '2-digit', second: '2-digit'
+            });
+            document.getElementById('col-time').textContent = now.toLocaleTimeString('es-ES', {
+                timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit', second: '2-digit'
+            });
         }
         updateClocks();
         setInterval(updateClocks, 1000);
 
         // ============================================================
-        // 2. TABS
+        // 2. CALCULADORA UTC → COLOMBIA
+        // ============================================================
+        function convertUTCtoCol() {
+            const input = document.getElementById('inputUTC').value;
+            if (!input) return;
+            const parts = input.split(':');
+            if (parts.length !== 2) return;
+            let h = parseInt(parts[0], 10);
+            let m = parseInt(parts[1], 10);
+            if (isNaN(h) || isNaN(m)) return;
+            // Restar 5 horas (UTC-5)
+            let colH = h - 5;
+            let colM = m;
+            if (colH < 0) { colH += 24; }
+            // Formatear
+            const pad = n => String(n).padStart(2, '0');
+            document.getElementById('resultCol').textContent = `${pad(colH)}:${pad(colM)}`;
+        }
+        document.getElementById('inputUTC').addEventListener('input', convertUTCtoCol);
+        // Valor inicial por defecto: 15:54 (como mencionaste)
+        document.getElementById('inputUTC').value = '15:54';
+        convertUTCtoCol();
+
+        // ============================================================
+        // 3. TABS
         // ============================================================
         const tabs = document.querySelectorAll('.tab-btn');
-        const contents = { guia: document.getElementById('tab-guia'), futuros: document.getElementById('tab-futuros') };
+        const contents = {
+            guia: document.getElementById('tab-guia'),
+            futuros: document.getElementById('tab-futuros')
+        };
         tabs.forEach(btn => {
             btn.addEventListener('click', function() {
                 tabs.forEach(b => b.classList.remove('active'));
@@ -250,7 +457,7 @@
         });
 
         // ============================================================
-        // 3. FETCH CON PROXIES (MEJORADO)
+        // 4. FETCH CON PROXIES ACTUALIZADOS (OPCIÓN 1)
         // ============================================================
         const badge = document.getElementById('status-badge');
         const updateInfo = document.getElementById('update-info');
@@ -259,13 +466,22 @@
             badge.textContent = message;
             badge.className = 'status-badge ' + type;
         }
+
         function setUpdateTime() {
             const now = new Date();
-            updateInfo.textContent = 'Última actualización: ' + now.toLocaleString('es-ES', { timeZone: 'America/Bogota', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            updateInfo.textContent = 'Última actualización: ' + now.toLocaleString('es-ES', {
+                timeZone: 'America/Bogota',
+                day: '2-digit', month: '2-digit', year: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            });
         }
 
+        // ============================================================
+        // PARSEO ROBUSTO
+        // ============================================================
         function parseSpeedRounds(html) {
             const rounds = [];
+            // Buscar bloques con "### #numero Nombre" y luego Start/End
             const blockRegex = /###\s*#(\d+)\s+([^\n]+?)\s+Start:\s*\|\s*([^\n]+?)\s*\|{3,}\s*End:\s*\|\s*([^\n]+?)\s*Description:/gs;
             let match;
             while ((match = blockRegex.exec(html)) !== null) {
@@ -273,6 +489,7 @@
                 const name = match[2].trim();
                 const startRaw = match[3].trim();
                 const endRaw = match[4].trim();
+                // Extraer tipo (primera palabra después de ENS o del nombre)
                 let type = name.replace(/ENS\s*/i, '').trim();
                 const typeMatch = type.match(/^([A-Za-z0-9\s']+?)(?:\s*\(|$)/);
                 if (typeMatch) type = typeMatch[1].trim();
@@ -282,6 +499,7 @@
         }
 
         function parseSpeedDate(str, year) {
+            // Ej: "Jul 04, 17:00"
             const parts = str.split(',');
             if (parts.length !== 2) return null;
             const monthDay = parts[0].trim();
@@ -312,17 +530,25 @@
                     startDate = parseSpeedDate(r.startRaw, year + 1);
                     endDate = parseSpeedDate(r.endRaw, year + 1);
                 }
-                const startStr = startDate ? startDate.toLocaleString('es-ES', { timeZone: 'UTC', day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }) : r.startRaw;
-                const endStr = endDate ? endDate.toLocaleString('es-ES', { timeZone: 'UTC', day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }) : r.endRaw;
-                
+                const startStr = startDate ? startDate.toLocaleString('es-ES', {
+                    timeZone: 'UTC', day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'
+                }) : r.startRaw;
+                const endStr = endDate ? endDate.toLocaleString('es-ES', {
+                    timeZone: 'UTC', day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'
+                }) : r.endRaw;
+
                 let startCol = '--', endCol = '--';
                 if (startDate) {
                     const colDate = new Date(startDate.getTime() - 5 * 60 * 60 * 1000);
-                    startCol = colDate.toLocaleString('es-ES', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+                    startCol = colDate.toLocaleString('es-ES', {
+                        day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'
+                    });
                 }
                 if (endDate) {
                     const colDate = new Date(endDate.getTime() - 5 * 60 * 60 * 1000);
-                    endCol = colDate.toLocaleString('es-ES', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+                    endCol = colDate.toLocaleString('es-ES', {
+                        day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'
+                    });
                 }
 
                 return `<tr>
@@ -337,20 +563,26 @@
             tbody.innerHTML = rows.join('');
         }
 
+        // ============================================================
+        // FETCH CON PROXIES (OPCIÓN 1 - ACTUALIZADO)
+        // ============================================================
         async function fetchWithProxy(url) {
-            // Lista de proxies confiables (RAW devuelve directamente el HTML)
+            // Proxies que funcionan a marzo 2026
             const proxies = [
-                `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-                `https://corsproxy.io/?${encodeURIComponent(url)}`
+                `https://thingproxy.freeboard.io/fetch/${encodeURIComponent(url)}`,
+                `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`
             ];
             for (const proxy of proxies) {
                 try {
+                    console.log('Intentando proxy:', proxy);
                     const response = await fetch(proxy);
                     if (response.ok) {
                         const text = await response.text();
-                        // Validar que realmente trajo la página de speeds
-                        if (text.includes('speed-round') || text.includes('### #')) {
+                        // Validar que realmente contiene datos de speeds
+                        if (text.includes('speed-round') || text.includes('### #') || text.includes('Speed rounds')) {
                             return text;
+                        } else {
+                            console.warn('El proxy devolvió HTML pero no parece ser la página de speeds');
                         }
                     }
                 } catch (e) {
@@ -388,12 +620,11 @@
         }
 
         // ============================================================
-        // 4. INICIALIZAR
+        // 5. INICIALIZAR
         // ============================================================
         document.getElementById('refresh-btn').addEventListener('click', fetchSpeedRounds);
-        
-        // Cargar al iniciar (con un pequeño retraso para asegurar que todo está listo)
-        setTimeout(fetchSpeedRounds, 300);
+        // Cargar al iniciar (con pequeño retraso)
+        setTimeout(fetchSpeedRounds, 500);
     </script>
 </body>
 </html>
